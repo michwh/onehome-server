@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
+#coding:utf-8
 
 import os
+import configparser
+dir_now = os.path.dirname(os.path.dirname(os.path.abspath("settings.py")))  # 路径自己指定，我这里是以settings.py为参考，abspath是取它的上级目录，也可以直接指定绝对路径来读取
+conf = configparser.ConfigParser()
+conf.read(dir_now+'/config.ini')  # 读config.ini文件
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.users',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +81,11 @@ WSGI_APPLICATION = 'onehomeServer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': conf.get('global', 'database_table'),  # 库名
+        'USER': conf.get('global', 'database_uname'),  # 用户名
+        'PASSWORD': conf.get('global', 'databse_passwd'),  # 密码
+        'HOST': conf.get('global', 'database_ip'),  # 数据库主机ip
     }
 }
 
@@ -103,9 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-CN'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
