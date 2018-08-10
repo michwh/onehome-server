@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 import os
 import configparser
-dir_now = os.path.dirname(os.path.dirname(os.path.abspath("settings.py")))  # 路径自己指定，我这里是以settings.py为参考，abspath是取它的上级目录，也可以直接指定绝对路径来读取
-conf = configparser.ConfigParser()
-conf.read(dir_now+'/config.ini')  # 读config.ini文件
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,14 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api.users',
+    'users',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -60,7 +59,7 @@ ROOT_URLCONF = 'onehomeServer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['onehome/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,10 +81,10 @@ WSGI_APPLICATION = 'onehomeServer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': conf.get('global', 'database_table'),  # 库名
-        'USER': conf.get('global', 'database_uname'),  # 用户名
-        'PASSWORD': conf.get('global', 'databse_passwd'),  # 密码
-        'HOST': conf.get('global', 'database_ip'),  # 数据库主机ip
+        'NAME': 'onehome',  # 库名
+        'USER': 'root',  # 用户名
+        'PASSWORD': 'hwh',  # 密码
+        'HOST': '127.0.0.1',  # 数据库主机ip
     }
 }
 
@@ -112,8 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'zh-CN'
-
+LANGUAGE_CODE = 'zh-hans'
 TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
@@ -127,3 +125,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# 让 Django 用户认证系统使用我们自定义的用户模型
+#AUTH_USER_MODEL = 'users.User'
+
+# Add for vuejs
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "onehome/dist/static"),
+]
+
+APPEND_SLASH=False
