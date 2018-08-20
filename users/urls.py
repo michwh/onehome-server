@@ -1,7 +1,9 @@
 from django.conf.urls import url
-from . import views
+from users.views import *
+from rest_framework import routers
 
 app_name = 'users'
 urlpatterns = [
-    url(r'^register', views.register, name='register'),
+    url(r'^register', UserRegisterAPIView.as_view()),
+    url(r'^login', UserLoginAPIView.as_view()),
 ]

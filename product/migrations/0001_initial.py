@@ -12,17 +12,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name='Product',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('username', models.CharField(max_length=128, unique=True)),
-                ('password', models.CharField(max_length=256)),
-                ('email', models.EmailField(max_length=254, unique=True)),
                 ('c_time', models.DateTimeField(auto_now_add=True)),
+                ('price', models.CharField(max_length=20)),
+                ('title', models.CharField(max_length=100, verbose_name='标题')),
+                ('description', models.TextField(max_length=300, verbose_name='商品描述')),
+                ('pictures', models.ImageField(upload_to='static/images/%Y/%m/%d')),
             ],
             options={
-                'verbose_name': '用户',
-                'verbose_name_plural': '用户',
+                'verbose_name': '商品',
+                'verbose_name_plural': '商品',
                 'ordering': ['-c_time'],
             },
         ),

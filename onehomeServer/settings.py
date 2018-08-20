@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'product',
     'django_extensions',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -126,12 +128,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# 让 Django 用户认证系统使用我们自定义的用户模型
-#AUTH_USER_MODEL = 'users.User'
-
 # Add for vuejs
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "onehome/dist/static"),
 ]
+
 
 APPEND_SLASH=False
