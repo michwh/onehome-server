@@ -80,13 +80,15 @@ WSGI_APPLICATION = 'onehomeServer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
+from config_default import configs
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'onehome',  # 库名
-        'USER': 'root',  # 用户名
-        'PASSWORD': 'hwh',  # 密码
-        'HOST': '127.0.0.1',  # 数据库主机ip
+        'NAME': configs.get('db_name'),  # 库名
+        'USER': configs.get('db_user'),  # 用户名
+        'PASSWORD': configs.get('db_password'),  # 密码
+        'HOST': configs.get('db_host'),  # 数据库主机ip
     }
 }
 
@@ -127,7 +129,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
-
+django_file = os.path.dirname(os.path.dirname(__file__))
 # Add for vuejs
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "onehome/dist/static"),

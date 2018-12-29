@@ -9,6 +9,7 @@ class User(models.Model):
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
     c_time = models.DateTimeField(auto_now_add=True)
+    user_image_URL = models.ImageField(upload_to='static/userImages', null=True)
 
     def __str__(self):
         return self.name

@@ -7,8 +7,13 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.response import Response
 from rest_framework import status
 from .forms import UploadFileForm
+from users.models import User
+from rest_framework.renderers import JSONRenderer
+from config_default import configs
+from qiniu import Auth
 
 # Create your views here.
+
 
 # 获取商品列表
 class ProductListViewset(viewsets.ModelViewSet):
@@ -17,27 +22,35 @@ class ProductListViewset(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
     def get(self, request, format=None):
-        serializer = ProductSerializer
-        new_data = serializer.data
-        return Response(new_data, status=HTTP_200_OK)
+        queryset = self.filter_queryset(self.get_queryset())
 
-# 获取商品列表
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            data = self.get_paginated_response(serializer.data)
+            return Response(data, status=HTTP_200_OK)
+
+        serializer = self.get_serializer(queryset, many=True)
+        data = serializer.data
+        return Response(data, status=HTTP_200_OK)
+
+
+# 获取商品图片列表
 class ProductImagesListViewset(viewsets.ModelViewSet):
 
     queryset = ProductImags.objects.all()
     serializer_class = ProductImagesSerializer
 
     def get(self, request, format=None):
-        serializer = ProductImagesSerializer
-        new_data = serializer.data
-        return Response(new_data, status=HTTP_200_OK)
+        queryset = self.filter_queryset(self.get_queryset())
 
-# 发布商品消息的另一种方法
-class PublishViewSet(viewsets.ModelViewSet):
-    serializer_class = ProductImagesSerializer
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            data = self.get_paginated_response(serializer.data)
+            return Response(data, status=HTTP_200_OK)
 
-# 商品图片
-class ProductImagesViewSet(viewsets.ModelViewSet):
-    serializer_class = ProductImagesSerializer
-
+        serializer = self.get_serializer(queryset, many=True)
+        data = serializer.data
+        return Response(data, status=HTTP_200_OK)
 

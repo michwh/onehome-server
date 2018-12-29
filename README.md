@@ -7,7 +7,7 @@ Django+Vue实现移动端二手交易应用后端部分
 ## 技术栈
 
 * django
-* django-rest-framewok
+* django-rest-framework
 
 ## 实现功能
 

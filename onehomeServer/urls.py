@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^product/', include('product.urls')),  # 商品相关的操作
     url(r'^users/', include('users.urls')),  # 用户相关的操作
     url(r'^$', TemplateView.as_view(template_name="index.html")),
+    #url(r'^static/userIamges/')
 ]
