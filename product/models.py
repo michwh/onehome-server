@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Product(models.Model):
     user_name = models.CharField(max_length=128)
     user_image_URL = models.ImageField(upload_to='static/userImages', null=True)

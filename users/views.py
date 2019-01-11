@@ -9,6 +9,7 @@ from config_default import configs
 from qiniu import Auth
 import time
 import random
+import string
 
 import pdb
 
@@ -82,7 +83,9 @@ class PorductUploadTokenAPIView(APIView):
             q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
 
             # 生成图片名
-            key = username+'_'+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+'_'+str(random.randint(0, 9))+'.'+filetype
+            salt = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+            # key = username+'_'+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+'_'+str(random.randint(0, 9))+'.'+filetype
+            key = salt + '_' + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + '.' + filetype
 
             # 生成上传 Token，可以指定过期时间等
             token = q.upload_token(configs.get('qiniu').get('bucket_name'), key, 3600)
