@@ -137,3 +137,6 @@ STATICFILES_DIRS = [
 
 
 APPEND_SLASH=False
+
+# 多个子域共享cookie
+# SESSION_COOKIE_DOMAIN = "http://127.0.0.1:8000"
