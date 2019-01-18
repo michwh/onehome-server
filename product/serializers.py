@@ -10,8 +10,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class Collection(serializers.ModelSerializer):
-    class Meta:
-        exclude = []
-        model = Collection
-        fields = "__all__"
+# class Collection(serializers.ModelSerializer):
+#     class Meta:
+#         exclude = []
+#         model = Collection
+#         fields = "__all__"
