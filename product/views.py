@@ -69,6 +69,7 @@ class ProductListViewset(viewsets.ModelViewSet):
         # except User.DoesNotExist:
         #     user = None
         # if user:
+        # print('测试：' + str(request.user))
         if request.user.is_authenticated:
             # 获取所有数据
             roles = Product.objects.all()
@@ -106,10 +107,20 @@ class ProductListViewset(viewsets.ModelViewSet):
                     product_user = User.objects.get(username__exact=product_username)
                 except User.DoesNotExist:
                     product_user = None
-                product_avator_url = q.private_download_url(product_user.user_image_url, expires=3600)
+                if product_user.user_image_url:
+                    product_avator_url = q.private_download_url(product_user.user_image_url, expires=3600)
+                else:
+                    product_avator_url = None
 
                 # 获取用户的收藏状态
-                # print(Collection.objects.get(username__exact=user.username))
+                try:
+                    c = Collection.objects.get(username=str(request.user), product_id=obj.get('id'))
+                except Collection.DoesNotExist:
+                    c = None
+                if c:
+                    collect_state = True
+                else:
+                    collect_state = False
 
                 # 对时间字符串进行整理
                 date = obj.get('c_time').split(".")[0]
@@ -117,11 +128,12 @@ class ProductListViewset(viewsets.ModelViewSet):
                 time = date.split("T")[1]
 
                 new_obj = {
+                    'product_id': obj.get('id'),
                     'username': obj.get('username'),
                     'avator_url': product_avator_url,
                     'goods_price': obj.get('goods_price'),
                     'goods_img_url': imgs,
-                    'collect_state': False,
+                    'collect_state': collect_state,
                     'title': obj.get('title'),
                     'description': obj.get('description'),
                     'time': year + " " + time
