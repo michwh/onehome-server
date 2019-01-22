@@ -6,5 +6,6 @@ app_name = 'product'
 
 urlpatterns = [
     url(r'getList', ProductListViewset.as_view({'get': 'get'})),
-    url(r'publish', PublishViewset.as_view({'post': 'post'}))
+    url(r'publish', PublishViewset.as_view({'post': 'post'})),
+    url(r'getSearchList', SearchListViewset.as_view({'get': 'get'})),
 ]
