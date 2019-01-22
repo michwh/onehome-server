@@ -64,10 +64,12 @@ class UserLoginAPIView(APIView):
                 # 记忆已登录用户，作为用户是否拥有某项权限的认证
                 # self.request.session['user_username'] = user.username
                 token = Token.objects.get(user_id=user.id)
+                q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
+                user_image_url = q.private_download_url(new_data.get('user_image_url'), expires=3600)
                 new_obj = {
                     'username': new_data.get('username'),
                     'token': token.key,
-                    'user_image_url': new_data.get('user_image_url')
+                    'user_image_url': user_image_url
                 }
                 # print(token)
                 return Response({"stateCode": 200, "msg": new_obj}, status=HTTP_200_OK)
