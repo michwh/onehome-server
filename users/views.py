@@ -108,20 +108,21 @@ class ChangeAvatarAPIView(APIView):
             data = request.data
             user_image_url = data.get('user_image_url')
             q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
-            user_image_url = q.private_download_url(user_image_url, expires=3600)
             username = str(request.user)
             try:
                 user = User.objects.get(username__exact=username)
             except User.DoesNotExist:
                 user = None
             user.user_image_url = user_image_url
+            # 一定要加上这句话，要不然数据库数据不会更新
+            user.save(update_fields=['user_image_url'])
+            user_image_url = q.private_download_url(user_image_url, expires=3600)
             token = Token.objects.get(user_id=user.id)
             new_obj = {
                 'username': username,
                 'token': token.key,
                 'user_image_url': user_image_url
             }
-            # print(token)
             return Response({"stateCode": 200, "msg": new_obj}, status=HTTP_200_OK)
         else:
             return Response({"stateCode": 201, "msg": "您没有权限执行此操作"}, 201)
