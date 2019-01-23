@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^getImgUploadToken', ImgUploadTokenAPIView.as_view()),
     # 上传头像
     url(r'changeAvatar', ChangeAvatarAPIView.as_view()),
+    # 修改密码
+    url(r'changePassword', ChangePasswordAPIView.as_view()),
 ]

@@ -126,3 +126,21 @@ class ChangeAvatarAPIView(APIView):
             return Response({"stateCode": 200, "msg": new_obj}, status=HTTP_200_OK)
         else:
             return Response({"stateCode": 201, "msg": "您没有权限执行此操作"}, 201)
+
+
+# 修改密码
+class ChangePasswordAPIView(APIView):
+    def post(self, request):
+        if request.user.is_authenticated:
+            data = request.data
+            password = make_password(data.get('password'))
+            username = str(request.user)
+            try:
+                user = User.objects.get(username__exact=username)
+            except User.DoesNotExist:
+                user = None
+            user.password = password
+            user.save(update_fields=['password'])
+            return Response({"stateCode": 200, "msg": "操作成功"}, status=HTTP_200_OK)
+        else:
+            return Response({"stateCode": 201, "msg": "您没有权限执行此操作"}, 201)
