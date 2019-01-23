@@ -8,4 +8,6 @@ urlpatterns = [
     url(r'^login', UserLoginAPIView.as_view()),
     # 获取图片上传的token
     url(r'^getImgUploadToken', ImgUploadTokenAPIView.as_view()),
+    # 上传头像
+    url(r'changeAvatar', ChangeAvatarAPIView.as_view()),
 ]
