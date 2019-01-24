@@ -148,6 +148,25 @@ class SearchListViewset(viewsets.ModelViewSet):
             return Response(msg, 201)
 
 
+# 获取我的发布列表
+class MyPublishListViewset(viewsets.ModelViewSet):
+    def get(self, request):
+        if request.user.is_authenticated:
+            try:
+                my_publish_list = Product.objects.filter(username=str(request.user))
+            except Product.DoesNotExist:
+                my_publish_list = None
+            ser = ProductSerializer(instance=my_publish_list, many=True)
+            msg = sort_out_list(request, ser.data)
+            return Response(msg, 200)
+        else:
+            msg = {
+                'stateCode': 201,
+                'msg': '没有访问权限'
+            }
+            return Response(msg, 201)
+
+
 # 发布交易信息
 class PublishViewset(viewsets.ModelViewSet):
 

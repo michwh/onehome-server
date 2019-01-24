@@ -53,7 +53,7 @@ class CollectionListViewset(viewsets.ModelViewSet):
         if request.user.is_authenticated:
             try:
                 product_list = Product.objects.filter(collection__username=str(request.user))
-            except Collection.DoesNotExist:
+            except Product.DoesNotExist:
                 product_list = None
             ser = ProductSerializer(instance=product_list, many=True)
             msg = sort_out_list(request, ser.data)

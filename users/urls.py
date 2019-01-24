@@ -4,7 +4,9 @@ from rest_framework import routers
 
 app_name = 'users'
 urlpatterns = [
+    # 注册
     url(r'^register', UserRegisterAPIView.as_view()),
+    # 登录
     url(r'^login', UserLoginAPIView.as_view()),
     # 获取图片上传的token
     url(r'^getImgUploadToken', ImgUploadTokenAPIView.as_view()),
