@@ -7,6 +7,7 @@ from users.models import User
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username')
+    # user_id = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
     c_time = models.DateTimeField(auto_now_add=True)
     goods_price = models.CharField(max_length=20)
     title = models.CharField(max_length=100, verbose_name="标题")

@@ -53,9 +53,9 @@ def sort_out_list(request, data):
         except User.DoesNotExist:
             product_user = None
         if product_user.user_image_url:
-            product_avator_url = q.private_download_url(product_user.user_image_url, expires=3600)
+            product_avatar_url = q.private_download_url(product_user.user_image_url, expires=3600)
         else:
-            product_avator_url = None
+            product_avatar_url = None
 
         # 获取用户的收藏状态
         try:
@@ -74,8 +74,9 @@ def sort_out_list(request, data):
 
         new_obj = {
             'product_id': obj.get('id'),
+            'user_id': product_user.id,
             'username': obj.get('username'),
-            'avator_url': product_avator_url,
+            'avatar_url': product_avatar_url,
             'goods_price': obj.get('goods_price'),
             'goods_img_url': imgs,
             'collect_state': collect_state,

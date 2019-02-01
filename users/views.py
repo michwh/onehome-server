@@ -67,6 +67,8 @@ class UserLoginAPIView(APIView):
                 q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
                 user_image_url = q.private_download_url(new_data.get('user_image_url'), expires=3600)
                 new_obj = {
+                    'id': user.id,
+                    # 'password': user.password,
                     'username': new_data.get('username'),
                     'token': token.key,
                     'user_image_url': user_image_url
