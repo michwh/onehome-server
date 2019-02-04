@@ -36,7 +36,7 @@ class UserRegisterAPIView(APIView):
             'username': data.get('username'),
             'email': data.get('email'),
             'password': make_password(data.get('password')),
-            'user_image_url': data.get('user_image_url')
+            'student_card_image_url': data.get('student_card_image_url')
         }
         # print(new_user)
         serializer = RegisterSerializer(data=new_user)
