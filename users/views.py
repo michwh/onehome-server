@@ -20,7 +20,8 @@ from django.contrib.auth.hashers import make_password, check_password
 # 注册
 class UserRegisterAPIView(APIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    # serializer_class = UserSerializer
+    serializer_class = RegisterSerializer
     permission_classes = (AllowAny,)
 
     def post(self, request, format=None):
@@ -30,13 +31,15 @@ class UserRegisterAPIView(APIView):
         if User.objects.filter(email__exact=data.get('email')):
             return Response({"stateCode": 202, "msg": "邮箱已被注册"}, 201)
         new_user = {
+            'actual_name': data.get('actual_name'),
+            'student_id': data.get('student_id'),
             'username': data.get('username'),
             'email': data.get('email'),
             'password': make_password(data.get('password')),
             'user_image_url': data.get('user_image_url')
         }
         # print(new_user)
-        serializer = UserSerializer(data=new_user)
+        serializer = RegisterSerializer(data=new_user)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response({"stateCode": 200, "msg": "注册成功"}, 200)
@@ -88,19 +91,19 @@ class ImgUploadTokenAPIView(APIView):
         # username = data.get('username')
         filetype = data.get('filetype')
         timestamp = data.get('timestamp')
-        if request.user.is_authenticated:
-            # 构建鉴权对象
-            q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
+        # if request.user.is_authenticated:
+        # 构建鉴权对象
+        q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
 
-            # 生成图片名
-            salt = ''.join(random.sample(string.ascii_letters + string.digits, 8))
-            key = salt + '_' + str(int(time.time())) + '.' + filetype
+        # 生成图片名
+        salt = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+        key = salt + '_' + str(int(time.time())) + '.' + filetype
 
-            # 生成上传 Token，可以指定过期时间等
-            token = q.upload_token(configs.get('qiniu').get('bucket_name'), key, 3600)
-            return Response({"stateCode": 200, "token": token, "key": key, "timestamp": timestamp}, 200)
-        else:
-            return Response({"stateCode": 201, "msg": "您没有权限执行此操作"}, 201)
+        # 生成上传 Token，可以指定过期时间等
+        token = q.upload_token(configs.get('qiniu').get('bucket_name'), key, 3600)
+        return Response({"stateCode": 200, "token": token, "key": key, "timestamp": timestamp}, 200)
+        # else:
+        #     return Response({"stateCode": 201, "msg": "您没有权限执行此操作"}, 201)
 
 
 # 上传用户头像

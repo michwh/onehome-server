@@ -1,28 +1,19 @@
-# onehome-server
 
-Django+Vue实现移动端二手交易应用后端部分
+vue+django+mysql实现移动端二手交易应用后端部分
 
-前端部分：[onehome](https://github.com/michwh/onehome)
+# 相关仓库
 
-## 技术栈
+- [onehome](https://github.com/michwh/onehome)：项目前端部分
 
-* django
-* django-rest-framework
+- [onehomeServer](https://github.com/michwh/onehome-server)：项目后端部分
 
-## 实现功能
+- [onehomeDoc](https://github.com/michwh/onehomeDoc)：项目的一些文档
 
-* [x] 登录
-* [x] 注册
-* [x] 发布信息
-* [x] 获取商品列表
+# 技术栈
 
-## api
+- django
 
-|api                       |说明          |
-|--------------------------|-------------|
-|/users/login              |登录          |
-|/users/register           |注册          |
-|/product/getList/         |获取商品列表    |
-|/product/getImagesList/   |获取商品图片列表 |
-|/product/publish/         |发布商品消息    |
-|/product/publishImages/   |发布商品图片    |
+- django-rest-framework
+
+- channels
+

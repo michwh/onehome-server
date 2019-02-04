@@ -28,6 +28,17 @@ class User(AuthUser):
         verbose_name_plural = "用户"
 
 
+class Register(models.Model):
+    id = models.AutoField(primary_key=True)
+    actual_name = models.CharField(max_length=20)
+    student_id = models.CharField(max_length=20)
+    username = models.CharField(max_length=128, unique=True)
+    password = models.CharField(max_length=256)
+    email = models.EmailField(unique=True)
+    c_time = models.DateTimeField(auto_now_add=True)
+    student_card_image_url = models.CharField(max_length=100, null=True)
+
+
 # 当创建用户时，为每一个用户创建一个token
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
