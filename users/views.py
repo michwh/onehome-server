@@ -88,9 +88,7 @@ class UserLoginAPIView(APIView):
 class ImgUploadTokenAPIView(APIView):
     def post(self, request, format=None):
         data = request.data
-        # username = data.get('username')
         filetype = data.get('filetype')
-        timestamp = data.get('timestamp')
         # if request.user.is_authenticated:
         # 构建鉴权对象
         q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
@@ -101,7 +99,7 @@ class ImgUploadTokenAPIView(APIView):
 
         # 生成上传 Token，可以指定过期时间等
         token = q.upload_token(configs.get('qiniu').get('bucket_name'), key, 3600)
-        return Response({"stateCode": 200, "token": token, "key": key, "timestamp": timestamp}, 200)
+        return Response({"stateCode": 200, "token": token, "key": key}, 200)
         # else:
         #     return Response({"stateCode": 201, "msg": "您没有权限执行此操作"}, 201)
 
