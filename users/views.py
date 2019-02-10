@@ -68,15 +68,19 @@ class UserLoginAPIView(APIView):
                 # self.request.session['user_username'] = user.username
                 token = Token.objects.get(user_id=user.id)
                 q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
-                user_image_url = q.private_download_url(new_data.get('user_image_url'), expires=3600)
+                user_image_url = q.private_download_url(new_data.get('user_image_url'), expires=86400)
+                timeArray = time.strptime(str(user.last_login), "%Y-%m-%d %H:%M:%S")
                 new_obj = {
                     'id': user.id,
                     # 'password': user.password,
                     'username': new_data.get('username'),
                     'token': token.key,
-                    'user_image_url': user_image_url
+                    'user_image_url': user_image_url,
+                    'last_login': time.mktime(timeArray),
                 }
-                # print(token)
+                # print(time.mktime(timeArray))
+                user.last_login = time.strftime("%Y-%m-%d %H:%M:%S")
+                user.save(update_fields=['last_login'])
                 return Response({"stateCode": 200, "msg": new_obj}, status=HTTP_200_OK)
             else:
                 return Response({"stateCode": 202, "msg": "密码不正确"}, 202)  # 密码不正确
@@ -119,11 +123,11 @@ class ChangeAvatarAPIView(APIView):
             user.user_image_url = user_image_url
             # 一定要加上这句话，要不然数据库数据不会更新
             user.save(update_fields=['user_image_url'])
-            user_image_url = q.private_download_url(user_image_url, expires=3600)
+            user_image_url = q.private_download_url(user_image_url, expires=86400)
             token = Token.objects.get(user_id=user.id)
             new_obj = {
-                'username': username,
-                'token': token.key,
+                # 'username': username,
+                # 'token': token.key,
                 'user_image_url': user_image_url
             }
             return Response({"stateCode": 200, "msg": new_obj}, status=HTTP_200_OK)
