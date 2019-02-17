@@ -53,12 +53,12 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             )
         else:
             try:
-                user = User.objects.get(username__exact=from_user)
+                user = User.objects.get(id__exact=from_user)
             except User.DoesNotExist:
                 user = None
             q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
             avatar_url = q.private_download_url(user.user_image_url, expires=3600)
-            user_id = user.id
+            from_username = user.username
             await self.channel_layer.group_send(
                 to_user,
                 {
@@ -69,7 +69,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                         'from_user': from_user,
                         'time': time,
                         'avatar_url': avatar_url,
-                        'user_id': user_id,
+                        'from_username': from_username,
                     },
                 },
             )
@@ -89,7 +89,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 class PushConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        self.group_name = self.scope['url_route']['kwargs']['username']
+        self.group_name = self.scope['url_route']['kwargs']['id']
 
         await self.channel_layer.group_add(
             self.group_name,
