@@ -22,6 +22,7 @@ from django.http import HttpResponse
 from rest_framework.authtoken.models import Token
 import json
 from django.core import serializers
+from qiniu import BucketManager
 # Create your views here.
 
 
@@ -29,21 +30,29 @@ from django.core import serializers
 def sort_out_list(request, data):
     # 构建鉴权对象
     q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
+    base_url = configs.get('qiniu').get('domain') + '/'
     new_data = []
     for obj in data:
 
         # 获取商品图片链接，整理成数组
         imgs = []
-        private_url = q.private_download_url(obj.get('goods_img1'), expires=3600)
+        img1_url = base_url + obj.get('goods_img1')
+        private_url = q.private_download_url(img1_url, expires=3600)
+        # ret = requests.get(private_url + '?imageInfo')
+        # print(ret)
+        # print(private_url)
         imgs.append(private_url)
         if obj.get('goods_img2'):
-            private_url = q.private_download_url(obj.get('goods_img2'), expires=3600)
+            img2_url = base_url + obj.get('goods_img2')
+            private_url = q.private_download_url(img2_url, expires=3600)
             imgs.append(private_url)
         if obj.get('goods_img3'):
-            private_url = q.private_download_url(obj.get('goods_img3'), expires=3600)
+            img3_url = base_url + obj.get('goods_img3')
+            private_url = q.private_download_url(img3_url, expires=3600)
             imgs.append(private_url)
         if obj.get('goods_img4'):
-            private_url = q.private_download_url(obj.get('goods_img4'), expires=3600)
+            img4_url = base_url + obj.get('goods_img4')
+            private_url = q.private_download_url(img4_url, expires=3600)
             imgs.append(private_url)
 
         # 获取商品用户头像
@@ -53,7 +62,8 @@ def sort_out_list(request, data):
         except User.DoesNotExist:
             product_user = None
         if product_user.user_image_url:
-            product_avatar_url = q.private_download_url(product_user.user_image_url, expires=3600)
+            head_url = base_url + product_user.user_image_url
+            product_avatar_url = q.private_download_url(head_url, expires=3600)
         else:
             product_avatar_url = None
 
@@ -82,7 +92,8 @@ def sort_out_list(request, data):
             'collect_state': collect_state,
             'title': obj.get('title'),
             'description': obj.get('description'),
-            'time': year + " " + time
+            'time': year + " " + time,
+            'first_img_width_height': obj.get('first_img_width_height')
         }
         new_data.append(new_obj)
 

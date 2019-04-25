@@ -68,7 +68,8 @@ class UserLoginAPIView(APIView):
                 # self.request.session['user_username'] = user.username
                 token = Token.objects.get(user_id=user.id)
                 q = Auth(configs.get('qiniu').get('AK'), configs.get('qiniu').get('SK'))
-                user_image_url = q.private_download_url(new_data.get('user_image_url'), expires=86400)
+                base_url = configs.get('qiniu').get('domain') + '/'
+                user_image_url = q.private_download_url(base_url + new_data.get('user_image_url'), expires=86400)
                 timeArray = time.strptime(str(user.last_login), "%Y-%m-%d %H:%M:%S")
                 new_obj = {
                     'id': user.id,

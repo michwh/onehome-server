@@ -16,10 +16,11 @@ class Product(models.Model):
     goods_img2 = models.CharField(max_length=100, null=True)
     goods_img3 = models.CharField(max_length=100, null=True)
     goods_img4 = models.CharField(max_length=100, null=True)
+    first_img_width_height = models.CharField(max_length=100, null=True)
 
     # 定义数据库的打印效果
-    def __str__(self):
-        return 'id:'+str(self.id)+',username:'+str(self.username)
+    # def __str__(self):
+        # return 'id:'+str(self.id)+',username:'+str(self.username)
 
     class Meta:
         # 返回的数据按时间排序
@@ -27,17 +28,4 @@ class Product(models.Model):
         verbose_name = "商品"
         verbose_name_plural = "商品"
 
-
-# class Collection(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     username = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username')
-#     c_time = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         return self.id
-#
-#     class Meta:
-#         ordering = ["-c_time"]
-#         verbose_name = "收藏"
 

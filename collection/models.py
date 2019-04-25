@@ -15,3 +15,4 @@ class Collection(models.Model):
     class Meta:
         ordering = ["-c_time"]
         verbose_name = "收藏"
+        verbose_name_plural = "收藏"

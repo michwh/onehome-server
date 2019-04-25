@@ -38,6 +38,11 @@ class Register(models.Model):
     c_time = models.DateTimeField(auto_now_add=True)
     student_card_image_url = models.CharField(max_length=100, null=True)
 
+    class Meta:
+        # ordering = ["-c_time"]
+        verbose_name = "注册"
+        verbose_name_plural = "注册"
+
 
 # 当创建用户时，为每一个用户创建一个token
 @receiver(post_save, sender=User)
