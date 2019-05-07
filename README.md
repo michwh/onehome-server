@@ -31,7 +31,7 @@ configs = {
         'AK': 'xxx', # 七牛云AK
         'SK': 'xxx', # 七牛云SK
         'bucket_name': 'xxx', # 七牛云存储空间名称
-        'domain': 'xxx', # 七牛云上传的地址
+        'domain': 'xxx', # 图片下载地址，七牛给的测试域名或者自己绑定的域名，例如：http://qiniu.fanfei.site
     },
 }
 ```
