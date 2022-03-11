@@ -22,7 +22,7 @@ hyperlink==18.0.0
 idna==2.7
 incremental==17.5.0
 msgpack==0.6.1
-Pillow==5.3.0
+Pillow==9.0.1
 pycparser==2.19
 PyHamcrest==1.9.0
 PyMySQL==0.9.2
